@@ -1,9 +1,6 @@
-
-
-
 var EventView = Backbone.View.extend({
 	initialize: function(){
-		this.render();
+		//this.render();
 	},
 	render: function() {
 		//var data = this.model;
@@ -18,37 +15,36 @@ var EventView = Backbone.View.extend({
 
 	}
 });
+var eventView = new EventView({
+	el : "#backbone-view"
+});
 
 var EventModel = Backbone.Model.extend({});
 
 $.get("models/events.json",function(response){
 	window.eventModel1  = new EventModel(response);
-
-	var eventView = new EventView({
-		el : "#backbone-view",
-		model : window.eventModel1,
-	});
+	eventView.model = window.eventModel1;
+	eventView.render();	
 });
-// var EventRoute = Backbone.Router.extend({
-//   routes: {
-//     "":                 "home",    
-//     "/#event":     "event" 
-//   },
+var EventRoute = Backbone.Router.extend({
+  routes: {   
+    "event/:eventId":     "event" 
+  },
 
-//   home: function() {
-//   	console.log('home page');
-//   },
+  home: function() {
+  	console.log('home page');
+  },
 
-//   event: function(query, page) {
-//     console.log('event details page');
-//   }
+  event: function(query) {
+    console.log(query);
+  }
 
-// });
+});
 
 
-// var eventRoute = new EventRoute();
+var eventRoute = new EventRoute();
 
-// Backbone.history.start();
+Backbone.history.start();
  
 
 
