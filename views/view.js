@@ -4,13 +4,13 @@ var EventView = Backbone.View.extend({
 	},
 	render: function() {
 		//var data = this.model;
-		var content = this.model.toJSON();
+		var content = this.model;
 		var self = this;
 
-		$.get('templates/events.html', function (data) {
+		$.get(self.templateUrl , function (data) {
 			var template = Handlebars.compile(data);
 			var html    = template({events : content});
-			$(self.el).append(html);
+			$(self.el).html(html);
 		}, 'html');
 
 	}
@@ -21,22 +21,34 @@ var eventView = new EventView({
 
 var EventModel = Backbone.Model.extend({});
 
-$.get("models/events.json",function(response){
-	window.eventModel1  = new EventModel(response);
-	eventView.model = window.eventModel1;
-	eventView.render();	
+$.ajax({
+	method: "GET",
+	url: "models/events.json",
+	async: false,
+	success: function(response){
+		window.eventModel  = new EventModel(response).toJSON();		
+	}
 });
+
 var EventRoute = Backbone.Router.extend({
-  routes: {   
-    "event/:eventId":     "event" 
+  routes: {
+  	"" : "home"   ,
+    "events/:eventId":     "event" 
   },
 
   home: function() {
-  	console.log('home page');
+  	eventView.model = window.eventModel;
+  	eventView.templateUrl = 'templates/events.html';
+	eventView.render();	
   },
 
-  event: function(query) {
-    console.log(query);
+  event: function(eventId) {
+  	for(event in window.eventModel){
+  		if(window.eventModel[event]['id'] === eventId)
+  			eventView.model = window.eventModel[event];
+  	}    
+  	eventView.templateUrl = 'templates/eventDetails.html';
+	eventView.render();	
   }
 
 });
