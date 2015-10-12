@@ -1,0 +1,10 @@
+<div class="row"> 
+	{{#each events}}
+	<div class="col-sm-3">
+		<div class="event-container">			
+			<p class="info">{{this.name.html}}</p>
+			<p class="info">{{this.created}}</p>
+		</div>
+	</div>
+	{{/each}}	
+</div>
