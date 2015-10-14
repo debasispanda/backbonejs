@@ -19,21 +19,29 @@ var eventView = new EventView({
 	el : "#backbone-view"
 });
 
+
 var EventModel = Backbone.Model.extend({});
 
 $.ajax({
 	method: "GET",
-	url: "models/events.json",
+	url: baseUrl + "events/getEvents",
 	async: false,
+	dataType:'jsonp',
 	success: function(response){
-		window.eventModel  = new EventModel(response).toJSON();		
+		window.eventModel  = new EventModel(response).toJSON();	
+		var eventRoute = new EventRoute();	
+		Backbone.history.start();
 	}
 });
+
 
 var EventRoute = Backbone.Router.extend({
   routes: {
   	"" : "home"   ,
-    "events/:eventId":     "event" 
+  	"events" : "home"   ,
+    "events/:eventId": "eventDetails",
+    "speakers" : "showSpeakers"   ,
+    "events/:eventId/:speakerId": "speakerDetails"  
   },
 
   home: function() {
@@ -42,21 +50,47 @@ var EventRoute = Backbone.Router.extend({
 	eventView.render();	
   },
 
-  event: function(eventId) {
+  eventDetails: function(eventId) {
   	for(event in window.eventModel){
   		if(window.eventModel[event]['id'] === eventId)
   			eventView.model = window.eventModel[event];
   	}    
   	eventView.templateUrl = 'templates/eventDetails.html';
 	eventView.render();	
+  },
+
+  speakerDetails: function(eventId, speakerId) {     
+
+  	$.ajax({
+		method: "GET",
+		url: baseUrl + "events/getSpeakers/" + speakerId,
+		async: false,
+		dataType:'jsonp',
+		success: function(response){
+			eventView.model  = new EventModel(response).toJSON();	
+			eventView.templateUrl = 'templates/speakerDetails.html';
+			eventView.render();	
+		}
+	});
+  	
+  },
+  showSpeakers : function(){
+  	$.ajax({
+		method: "GET",
+		url: baseUrl + "events/getSpeakers/",
+		async: false,
+		dataType:'jsonp',
+		success: function(response){
+			eventView.model  = new EventModel(response).toJSON();	
+			eventView.templateUrl = 'templates/speakers.html';
+			eventView.render();	
+		}
+	});
+
   }
 
 });
 
-
-var eventRoute = new EventRoute();
-
-Backbone.history.start();
  
 
 

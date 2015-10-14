@@ -1,9 +1,25 @@
 <div class="row"> 
 	<div class="col-sm-12">
 		<div class="event-detail-container">		
-			<img src="{{events.logo.url}}" alt="{{events.id}}">	
-			<p class="info">{{events.description.text}}</p>
-			<a href="/backbonejs" class="btn btn-primary">Back</a>
+			<!-- <img src="{{events.logo.url}}" alt="{{events.id}}">	 -->
+			<h3 class="info">{{events.event_title}}</h3>
+			<p class="info">{{events.event_time}}</p>
+			<p class="info">{{events.event_venue}}</p>
+			<p class="info">{{events.event_desc}}</p>
+			<div class="row">
+				<div class="col-sm-3"><p class="info">Speaker: </p></div>
+				<div class="col-sm-3">
+					<div class="row">
+						{{#each events}}
+						<p class="info"> <a href="#events/speaker/{{events.event_speaker}}">{{events.event_speaker}}</a></p>
+						{{/each}}	
+					</div>
+				</div>
+			</div>
+			{{#each events}}
+			<p class="info">Speaker: {{events.event_speaker}} <a href="#events/speaker/{{events.event_speaker}}">Details</a></p>
+			{{/each}}	
+			<a href="#events" class="btn btn-primary">All Events</a>
 		</div>
 	</div>	
 </div>

@@ -1,0 +1,15 @@
+<div class="row"> 
+	{{#each events}}
+	<div class="col-sm-3">
+		<div class="event-detail-container">		
+			<h3 class="info"><a href="#events/speaker/{{this.s_id}}">{{this.s_name}}</a></h3>
+			<p class="info">{{this.s_desc}}</p>
+		</div>
+	</div>	
+	{{/each}}	
+</div>
+<div class="row" style="margin-top: 20px">
+	<div class="col-xs-12">
+		<a href="#events" class="btn btn-primary">All Events</a>
+	</div>
+</div>

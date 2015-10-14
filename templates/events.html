@@ -1,9 +1,10 @@
 <div class="row"> 
 	{{#each events}}
 	<div class="col-sm-3">
-		<div class="event-container">			
-			<p class="info"><a href="#events/{{this.id}}">{{this.name.html}}</a></p>
-			<p class="info">{{this.created}}</p>
+		<div class="event-container">	
+			<img class="img-responsive" src="{{this.event_image}}" alt="{{this.event_title}}" />		
+			<h4 class="info"><a href="#events/{{this.id}}">{{this.event_title}}</a></h4>
+			<p class="info">{{this.event_time}}</p>
 		</div>
 	</div>
 	{{/each}}	
